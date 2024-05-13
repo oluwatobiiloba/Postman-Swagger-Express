@@ -1,0 +1,25 @@
+{
+  "name": "postman-swagger-express",
+  "version": "0.0.0",
+  "description": "Postman doc to swagger UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oluwatobiiloba/postman-swagger-express.git"
+  },
+  "keywords": [
+    "Postman",
+    "Swagger",
+    "express",
+    "route"
+  ],
+  "author": "Oluwatobiloba Aremu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oluwatobiiloba/postman-swagger-express/issues"
+  },
+  "homepage": "https://github.com/oluwatobiiloba/postman-swagger-express#readme"
+}
