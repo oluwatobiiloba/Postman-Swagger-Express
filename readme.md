@@ -1,22 +1,17 @@
 
-# Postman Swagger Express
+# postman-swagger-express
 
-Postman Swagger Express is a middleware for Express.js that automates the process of generating Swagger UI documentation from Postman collections. It simplifies the task of documenting and visualizing your API endpoints, making it easier for developers to understand and interact with your API.
+Convert Postman documentation to Swagger UI for Express routes.
 
 ## Installation
-
-To install Postman Swagger Express, use npm:
 
 ```bash
 npm install postman-swagger-express
 ```
 
-# Important Note
-
-If you are bootstrapping your Express app using a function , make sure to await the `serveSwaggerUI` function call. It is asynchronous and requires awaiting to ensure proper execution.
-
-
 ## Usage
+
+### Static Generation of Swagger UI
 
 ```javascript
 const express = require("express");
@@ -24,44 +19,56 @@ const { serveSwaggerUI } = require("postman-swagger-express");
 
 const app = express();
 
-// Serve Swagger UI for a specific route
-serveSwaggerUI(app, "/api-docs", "your_postman_collection_id", {
+serveSwaggerUI(app, "/api-docs-static", "your_postman_collection_id", {
   postmanApiKey: "your_postman_api_key",
   inclusionList: ["/api/users"],
   exclusionList: ["/api/admin"],
   liveBaseUrl: "http://localhost:3000",
 });
 
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 ```
 
-## API
+### Dynamic Generation of Swagger UI
 
-### `serveSwaggerUI(app, route, postmanId, options)`
+```javascript
+const express = require("express");
+const { serveSwaggerUIDynamic } = require("postman-swagger-express");
 
-Serves Swagger UI for the specified Express app and route.
+const app = express();
 
-- `app`: Express application instance.
-- `route`: Route path where Swagger UI will be served.
-- `postmanId`: Postman collection ID.
-- `options`: Additional configuration options:
-  - `postmanApiKey`: Postman API key for accessing the collection (optional).
-  - `inclusionList`: Array of paths to include in the Swagger specification (optional).
-  - `exclusionList`: Array of paths to exclude from the Swagger specification (optional).
-  - `liveBaseUrl`: Base URL of the live API server (optional).
+serveSwaggerUIDynamic(app, "/api-docs-dynamic", "your_postman_collection_id", {
+  postmanApiKey: "your_postman_api_key",
+  inclusionList: ["/api/users"],
+  exclusionList: ["/api/admin"],
+  liveBaseUrl: "http://localhost:3000",
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+```
+
+### Explanation
+
+- **Static Generation:** Use `serveSwaggerUI` to serve the Swagger UI with the Swagger collection generated once during initialization. This method is suitable for scenarios where the Swagger documentation doesn't change frequently.
+
+- **Dynamic Generation:** Use `serveSwaggerUIDynamic` to serve the Swagger UI with the Swagger collection generated dynamically on each request. This approach ensures that the Swagger documentation is always up-to-date.
 
 ## License
 
-Postman Swagger Express is licensed under the [ISC License](LICENSE).
+This project is licensed under the 0BSD License - see the [LICENSE](LICENSE) file for details.
 
-## Author
+## Issues
 
-- Oluwatobiloba Aremu
+Please report any issues or bugs you encounter on the [GitHub Issues](https://github.com/oluwatobiiloba/postman-swagger-express/issues) page.
 
-## Support and Contribution
+## Repository
 
-- For issues or feature requests, please submit an issue on [GitHub](https://github.com/oluwatobiiloba/postman-swagger-express/issues).
-- Contributions are welcome! Feel free to submit a pull request.
+The source code is hosted on [GitHub](https://github.com/oluwatobiiloba/postman-swagger-express).

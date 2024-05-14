@@ -1,7 +1,7 @@
 const express = require("express");
 const request = require("supertest");
 const swaggerUI = require("swagger-ui-express");
-const { serveSwaggerUI } = require("../index");
+const { serveSwaggerUI, serveSwaggerUIDynamic } = require("../index");
 const swagger = require("../src/swagger");
 
 jest.mock("../src/swagger.js");
@@ -100,3 +100,5 @@ describe("serveSwaggerUI", () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith(`Error serving Swagger UI: Error: ${errorMessage}`);
   });
 });
+
+
