@@ -13,13 +13,13 @@ module.exports = {
             const response = await axios.get(`https://api.getpostman.com/collections/${collectionId}`, options);
             return response.data;
         } catch (error) {
-          console.error(`Error fetching or encoding content from ${collectionId}:`, error.message);
+            console.error(`Error fetching or encoding content from ${collectionId}:`, error.message);
+            return {}
         }
     },  
     
-    async generateSwaggerYaml(collectionId, postmanApiKey) {
+    async generateSwaggerYaml(collection) {
         try {
-            const { collection } = await this.fetchPostmanCollection(collectionId, postmanApiKey);
             const result = await postmanToOpenApi(JSON.stringify(collection), null, { defaultTag: 'General' })
             return result
         } catch (error) {
@@ -30,7 +30,11 @@ module.exports = {
 
     async generateSwaggerJs(collectionId, config = {}) {
         try {
-            const swaggeryml = await this.generateSwaggerYaml(collectionId,config.postmanApiKey);
+            const { collection } = await this.fetchPostmanCollection(collectionId, config.postmanApiKey);
+            if (!collection) {
+                throw new Error("Collection not found");
+            }   
+            const swaggeryml = await this.generateSwaggerYaml(collection);
             const result = yamljs.parse(swaggeryml)
             return result
         } catch (error) {

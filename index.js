@@ -12,8 +12,8 @@ async function serveSwaggerUI(app, route, postmanId, options) {
                 )
             );
         }
-
-        if (options.exclusionList && options.exclusionList.length > 0) {
+        
+        if (options.exclusionList && options.exclusionList.length > 0 ) {
             collection.paths = Object.fromEntries(
                 Object.entries(collection.paths).filter(([path, methods]) =>
                     !options.exclusionList.includes(path)
@@ -21,17 +21,27 @@ async function serveSwaggerUI(app, route, postmanId, options) {
             );
         }
 
-        collection.servers = [
-            {
-                url: options.liveBaseUrl,
-                description: `${options.nodeEnv} Server`
-            },
-        ];
+        const usedTags = new Set();
+        Object.values(collection.paths).forEach(path => {
+            Object.values(path).forEach(operation => {
+                if (operation.tags) {
+                    operation.tags.forEach(tag => usedTags.add(tag));
+                }
+            });
+        });
 
+        collection.tags = collection.tags.filter(tag => usedTags.has(tag.name));
+        
+
+        if (options.liveBaseUrl) {
+            collection.servers = [
+                {
+                    url: options.liveBaseUrl,
+                    description: `${options.nodeEnv || ""} Server`
+                },
+            ];
+        }
         app.use(route, swaggerUI.serve, swaggerUI.setup(collection));
-
-        console.log(`Swagger UI served at ${route}`);
-
     } catch (error) {
         console.error(`Error serving Swagger UI: ${error}`);
     }

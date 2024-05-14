@@ -1,86 +1,61 @@
 
-# Usage Instructions for `renderSwagger`
+# Postman Swagger Express
 
-## Introduction
-
-The `renderSwagger` function is a utility that generates and sets up Swagger UI documentation based on a Postman collection. It accepts various parameters to customize the generated documentation, including Postman ID, base URL, environment, Postman API key, inclusion list, and exclusion list.
+Postman Swagger Express is a middleware for Express.js that automates the process of generating Swagger UI documentation from Postman collections. It simplifies the task of documenting and visualizing your API endpoints, making it easier for developers to understand and interact with your API.
 
 ## Installation
 
-To use the `renderSwagger` function, you need to install it as an npm package:
+To install Postman Swagger Express, use npm:
 
 ```bash
-npm install your-package-name
+npm install postman-swagger-express
 ```
 
 ## Usage
 
-### Importing the Module
-
-First, import the `renderSwagger` function from the installed package:
-
 ```javascript
-const { renderSwagger } = require('your-package-name');
-```
+const express = require("express");
+const { serveSwaggerUI } = require("postman-swagger-express");
 
-### Calling the Function
+const app = express();
 
-Call the `renderSwagger` function with the required parameters:
+// Serve Swagger UI for a specific route
+serveSwaggerUI(app, "/api-docs", "your_postman_collection_id", {
+  postmanApiKey: "your_postman_api_key",
+  inclusionList: ["/api/users"],
+  exclusionList: ["/api/admin"],
+  liveBaseUrl: "http://localhost:3000",
+});
 
-```javascript
-const postmanId = 'your-postman-id';
-const liveBaseUrl = 'https://your-live-base-url.com';
-const nodeEnv = 'development';
-const postmanApiKey = 'your-postman-api-key';
-const inclusionList = ['/api/v1/authenticate/login', '/api/v1/user/profile'];
-const exclusionList = ['/api/v1/authenticate/register'];
-
-const setupSwagger = await renderSwagger(postmanId, {
-  liveBaseUrl,
-  nodeEnv,
-  postmanApiKey,
-  inclusionList,
-  exclusionList
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });
 ```
 
-### Parameters
+## API
 
-- `postmanId` (string): The Postman collection ID.
-- `liveBaseUrl` (string): The base URL of the live server.
-- `nodeEnv` (string): The environment of the server (e.g., "development", "production").
-- `postmanApiKey` (string): The Postman API key for authentication (optional).
-- `inclusionList` (array of strings): An array of paths to include in the Swagger documentation.
-- `exclusionList` (array of strings): An array of paths to exclude from the Swagger documentation.
+### `serveSwaggerUI(app, route, postmanId, options)`
 
-### Output
+Serves Swagger UI for the specified Express app and route.
 
-The function returns a setup function for Swagger UI. You can use this setup function to mount Swagger UI middleware in your Express application:
-
-```javascript
-app.use('/api-docs', async (req, res, next) => {
-  try {
-    const setupSwagger = await renderSwagger(postmanId, {
-      liveBaseUrl,
-      nodeEnv,
-      postmanApiKey,
-      inclusionList,
-      exclusionList
-    });
-    
-    if (setupSwagger !== "Not available") {
-      setupSwagger(req, res, next);
-    } else {
-      res.send("Swagger setup failed");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-```
+- `app`: Express application instance.
+- `route`: Route path where Swagger UI will be served.
+- `postmanId`: Postman collection ID.
+- `options`: Additional configuration options:
+  - `postmanApiKey`: Postman API key for accessing the collection (optional).
+  - `inclusionList`: Array of paths to include in the Swagger specification (optional).
+  - `exclusionList`: Array of paths to exclude from the Swagger specification (optional).
+  - `liveBaseUrl`: Base URL of the live API server (optional).
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Postman Swagger Express is licensed under the [ISC License](LICENSE).
 
+## Author
+
+- Oluwatobiloba Aremu
+
+## Support and Contribution
+
+- For issues or feature requests, please submit an issue on [GitHub](https://github.com/oluwatobiiloba/postman-swagger-express/issues).
+- Contributions are welcome! Feel free to submit a pull request.
