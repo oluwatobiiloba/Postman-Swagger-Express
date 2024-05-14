@@ -1,17 +1,28 @@
 
-# postman-swagger-express
+# Postman Swagger Express
 
-Convert Postman documentation to Swagger UI for Express routes.
+Postman Swagger Express is a middleware for Express.js that automates the process of generating Swagger UI documentation from Postman collections. It simplifies the task of documenting and visualizing your API endpoints, making it easier for developers to understand and interact with your API.
 
 ## Installation
+
+To install Postman Swagger Express, use npm:
 
 ```bash
 npm install postman-swagger-express
 ```
 
+# Important Note
+
+If you are bootstrapping your Express app using a function, make sure to await the `serveSwaggerUI` function call. It is asynchronous and requires awaiting to ensure proper execution.
+
 ## Usage
 
 ### Static Generation of Swagger UI
+
+# Important Note
+
+If you are bootstrapping your Express app using a function , make sure to await the `serveSwaggerUI` function call. It is asynchronous and requires awaiting to ensure proper execution.
+
 
 ```javascript
 const express = require("express");
@@ -19,6 +30,7 @@ const { serveSwaggerUI } = require("postman-swagger-express");
 
 const app = express();
 
+// Static generation of Swagger UI
 serveSwaggerUI(app, "/api-docs-static", "your_postman_collection_id", {
   postmanApiKey: "your_postman_api_key",
   inclusionList: ["/api/users"],
@@ -41,6 +53,7 @@ const { serveSwaggerUIDynamic } = require("postman-swagger-express");
 
 const app = express();
 
+// Dynamic generation of Swagger UI
 serveSwaggerUIDynamic(app, "/api-docs-dynamic", "your_postman_collection_id", {
   postmanApiKey: "your_postman_api_key",
   inclusionList: ["/api/users"],
@@ -55,20 +68,44 @@ app.listen(PORT, () => {
 });
 ```
 
-### Explanation
+## API
 
-- **Static Generation:** Use `serveSwaggerUI` to serve the Swagger UI with the Swagger collection generated once during initialization. This method is suitable for scenarios where the Swagger documentation doesn't change frequently.
+### `serveSwaggerUI(app, route, postmanId, options)`
 
-- **Dynamic Generation:** Use `serveSwaggerUIDynamic` to serve the Swagger UI with the Swagger collection generated dynamically on each request. This approach ensures that the Swagger documentation is always up-to-date.
+Serves Swagger UI for the specified Express app and route with a static Swagger collection.
+
+- `app`: Express application instance.
+- `route`: Route path where Swagger UI will be served.
+- `postmanId`: Postman collection ID.
+- `options`: Additional configuration options:
+  - `postmanApiKey`: Postman API key for accessing the collection (optional).
+  - `inclusionList`: Array of paths to include in the Swagger specification (optional).
+  - `exclusionList`: Array of paths to exclude from the Swagger specification (optional).
+  - `liveBaseUrl`: Base URL of the live API server (optional).
+
+### `serveSwaggerUIDynamic(app, route, postmanId, options)`
+
+Serves Swagger UI for the specified Express app and route with a dynamically generated Swagger collection on each request.
+
+- `app`: Express application instance.
+- `route`: Route path where Swagger UI will be served.
+- `postmanId`: Postman collection ID.
+- `options`: Additional configuration options:
+  - `postmanApiKey`: Postman API key for accessing the collection (optional).
+  - `inclusionList`: Array of paths to include in the Swagger specification (optional).
+  - `exclusionList`: Array of paths to exclude from the Swagger specification (optional).
+  - `liveBaseUrl`: Base URL of the live API server (optional).
 
 ## License
 
-This project is licensed under the 0BSD License - see the [LICENSE](LICENSE) file for details.
+Postman Swagger Express is licensed under the [ISC License](LICENSE).
 
-## Issues
+## Author
 
-Please report any issues or bugs you encounter on the [GitHub Issues](https://github.com/oluwatobiiloba/postman-swagger-express/issues) page.
+- Oluwatobiloba Aremu
 
-## Repository
+## Support and Contribution
 
-The source code is hosted on [GitHub](https://github.com/oluwatobiiloba/postman-swagger-express).
+- For issues or feature requests, please submit an issue on [GitHub](https://github.com/oluwatobiiloba/postman-swagger-express/issues).
+- Contributions are welcome! Feel free to submit a pull request.
+```
