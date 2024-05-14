@@ -1,7 +1,7 @@
 const swaggerUI = require('swagger-ui-express');
 const swagger = require('./src/swagger');
 
-async function serveSwaggerUI(app, route, postmanId, options, callback) {
+async function serveSwaggerUI(app, route, postmanId, options) {
     try {
         const collection = await swagger.generateSwaggerJs(postmanId, { postmanApiKey: options.postmanApiKey });
 
@@ -42,21 +42,10 @@ async function serveSwaggerUI(app, route, postmanId, options, callback) {
             ];
         }
         app.use(route, swaggerUI.serve, swaggerUI.setup(collection));
-        if (callback) {
-            callback(null);
-        }
     } catch (error) {
         console.error(`Error serving Swagger UI: ${error}`);
-        if (callback) {
-            callback(error);
-        }
     }
 }
-
-module.exports = {
-    serveSwaggerUI
-};
-
 
 module.exports = {
     serveSwaggerUI
