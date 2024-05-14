@@ -1,6 +1,6 @@
 {
   "name": "postman-swagger-express",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Postman doc to swagger UI",
   "main": "index.js",
   "scripts": {
