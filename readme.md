@@ -11,6 +11,11 @@ To install Postman Swagger Express, use npm:
 npm install postman-swagger-express
 ```
 
+# Important Note
+
+If you are bootstrapping your Express app using a function , make sure to await the `serveSwaggerUI` function call. It is asynchronous and requires awaiting to ensure proper execution.
+
+
 ## Usage
 
 ```javascript
@@ -26,6 +31,7 @@ serveSwaggerUI(app, "/api-docs", "your_postman_collection_id", {
   exclusionList: ["/api/admin"],
   liveBaseUrl: "http://localhost:3000",
 });
+
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
